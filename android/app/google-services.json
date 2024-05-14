@@ -1,0 +1,86 @@
+{
+  "project_info": {
+    "project_number": "943517245712",
+    "project_id": "ptuddnt",
+    "storage_bucket": "ptuddnt.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:943517245712:android:a4a5ee00ae808276bbc595",
+        "android_client_info": {
+          "package_name": "com.anonymous.Projects"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCiQTsCdNqYnZ7r8vajq5r5wQDRedmSmoY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:943517245712:android:565de71237bf75e0bbc595",
+        "android_client_info": {
+          "package_name": "com.lab03"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCiQTsCdNqYnZ7r8vajq5r5wQDRedmSmoY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:943517245712:android:84d9fb51d44fe1c3bbc595",
+        "android_client_info": {
+          "package_name": "com.lab3"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCiQTsCdNqYnZ7r8vajq5r5wQDRedmSmoY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:943517245712:android:358b75834a8454d2bbc595",
+        "android_client_info": {
+          "package_name": "com.reactnativeproject"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCiQTsCdNqYnZ7r8vajq5r5wQDRedmSmoY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
