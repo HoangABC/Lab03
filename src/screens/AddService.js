@@ -1,12 +1,11 @@
 import React, { useState, useRef } from 'react';
-import { View, Text, SafeAreaView, TextInput, StyleSheet, Animated, Platform, Modal, TouchableWithoutFeedback, TouchableOpacity, Image } from 'react-native';
+import { View, Text, SafeAreaView, TextInput, StyleSheet, Animated, Platform, TouchableOpacity, Image } from 'react-native';
 import { Appbar, Button, IconButton } from 'react-native-paper';
 import firestore from '@react-native-firebase/firestore';
 import ImagePicker from 'react-native-image-crop-picker';
 import storage from '@react-native-firebase/storage';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import COLORS from '../../constants';  // Ensure COLORS is correctly imported
-import DatePicker from 'react-native-date-picker';
+import COLORS from '../../constants';  
 
 const AddService = ({ navigation }) => {
   const [service, setService] = useState('');
@@ -15,10 +14,6 @@ const AddService = ({ navigation }) => {
   const [priceError, setPriceError] = useState('');
   const [pathImages, setPathImages] = useState([]);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [selectedDate, setSelectedDate] = useState(new Date());
-  const [modalVisible, setModalVisible] = useState(false);
-  const [rotationValue] = useState(new Animated.Value(0));
-  const [formattedDate, setFormattedDate] = useState('');
   const ref = firestore().collection('services');
 
   const menuWidth = useRef(new Animated.Value(0)).current;
@@ -31,26 +26,8 @@ const AddService = ({ navigation }) => {
       useNativeDriver: false,
     }).start(() => {
       setIsMenuOpen(toValue === 1);
-      Animated.timing(rotationValue, {
-        toValue: toValue === 1 ? 1 : 0,
-        duration: 1000,
-        useNativeDriver: true,
-      }).start();
     });
   };
-
-  const openModal = () => {
-    setModalVisible(true);
-  };
-  
-  const closeModal = () => {
-    setModalVisible(false);
-  };
-  
-  const rotatePlusIcon = rotationValue.interpolate({
-    inputRange: [0, 1],
-    outputRange: ['0deg', '360deg'],
-  });
 
   const selectImages = async (multiple = true) => {
     try {
@@ -126,29 +103,16 @@ const AddService = ({ navigation }) => {
         title: service,
         price: parseFloat(price),
         imagePaths: imageUrls,
-        date: selectedDate,
+        date: new Date(), // Lấy ngày hiện tại
       });
     
       setService('');
       setPrice('');
       setPathImages([]);
-      setFormattedDate('');
-      setSelectedDate(new Date());
       setIsMenuOpen(false);
     } catch (e) {
       console.log(e.message);
     }
-  };
-
-  const updateFormattedDate = (date) => {
-    const formatted = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
-    setFormattedDate(formatted);
-  };
-
-  const handleDateSelection = (date) => {
-    setSelectedDate(date);
-    updateFormattedDate(date);
-    closeModal();
   };
 
   return (
@@ -197,96 +161,57 @@ const AddService = ({ navigation }) => {
           />
           <Text style={styles.errorText}>{priceError}</Text>
         </View>
-        <View style={styles.inputWrapper}>
-          <Text>{formattedDate}</Text>
-        </View>
-        <View style={styles.inputWrapper}>
-          <TouchableOpacity onPress={openModal}>
-            <Text>Chọn ngày</Text>
-          </TouchableOpacity>
-        </View>
-        <View style={styles.menuContainer}>
-          <IconButton
-            icon="plus"
-            color="#FFFFFF"
-            size={30}
-            style={[
-              styles.addButton,
-              { transform: [{ rotate: rotatePlusIcon }] },
-            ]}
-            onPress={toggleMenu}
-          />
-
-          <Animated.View
-            style={[
-              styles.menu,
-              {
-                width: menuWidth.interpolate({
-                  inputRange: [0, 1],
-                  outputRange: ['0%', '37%'],
-                }),
-              },
-            ]}
-          >
-            {isMenuOpen && (
-              <View style={styles.menuIcons}>
-                <IconButton
-                  icon="image-plus"
-                  color={COLORS.blue}
-                  size={30}
-                  style={styles.menuIcon}
-                  onPress={selectSingleImage}
-                />
-                <IconButton
-                  icon="image-multiple"
-                  color={COLORS.blue}
-                  size={30}
-                  style={styles.menuIcon}
-                  onPress={() => selectImages(true)}
-                />
-              </View>
-            )}
-          </Animated.View>
-        </View>
-
-        <View style={styles.imagesContainer}>
-          {pathImages.map((image, index) => (
-            <View key={index} style={styles.imageContainer}>
-              <Image source={{ uri: image }} style={styles.image} />
-              <Button onPress={() => removeImage(index)}>Remove</Button>
-            
-            </View>
-          ))}
-        </View>
       </View>
-  
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={closeModal}
-      >
-        <TouchableWithoutFeedback onPress={closeModal}>
-          <View style={styles.modalOverlay} />
-        </TouchableWithoutFeedback>
-        <View style={styles.modalContent}>
-          <DatePicker
-            date={selectedDate}
-            onDateChange={setSelectedDate}
-            mode="date"
-            textColor="black"
-            style={styles.datePicker}
-          />
-          <View style={styles.buttonContainer}>
-            <Button mode="contained" onPress={closeModal} style={styles.button}>
-              Hủy
-            </Button>
-            <Button mode="contained" onPress={() => handleDateSelection(selectedDate)} style={styles.button}>
-              Chọn
-            </Button>
+
+      <View style={styles.menuContainer}>
+        <IconButton
+          icon="plus"
+          color="#FFFFFF"
+          size={30}
+          style={styles.addButton}
+          onPress={toggleMenu}
+        />
+
+        <Animated.View
+          style={[
+            styles.menu,
+            {
+              width: menuWidth.interpolate({
+                inputRange: [0, 1],
+                outputRange: ['0%', '37%'],
+              }),
+            },
+          ]}
+        >
+          {isMenuOpen && (
+            <View style={styles.menuIcons}>
+              <IconButton
+                icon="image-plus"
+                color={COLORS.blue}
+                size={30}
+                style={styles.menuIcon}
+                onPress={selectSingleImage}
+              />
+              <IconButton
+                icon="image-multiple"
+                color={COLORS.blue}
+                size={30}
+                style={styles.menuIcon}
+                onPress={() => selectImages(true)}
+              />
+            </View>
+          )}
+        </Animated.View>
+      </View>
+
+      <View style={styles.imagesContainer}>
+        {pathImages.map((image, index) => (
+          <View key={index} style={styles.imageContainer}>
+            <Image source={{ uri: image }} style={styles.image} />
+            <Button onPress={() => removeImage(index)}>Remove</Button>
           </View>
-        </View>
-      </Modal>
+        ))}
+      </View>
     </SafeAreaView>
   );
 };
@@ -347,6 +272,7 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     overflow: 'hidden',
     marginLeft: 10,
+    
   },
   menuIcons: {
     flexDirection: 'row',
@@ -359,34 +285,9 @@ const styles = StyleSheet.create({
   addButton: {
     backgroundColor: COLORS.blue,
     borderRadius: 25,
-  },
-  modalOverlay: {
-    flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-  },
-  modalContent: {
-    backgroundColor: 'white',
-    padding: 20,
-    borderRadius: 10,
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-  },
-  buttonContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    marginTop: 20,
-  },
-  button: {
-    width: '40%',
-  },
-  add: {
-    marginTop: 9,
-    backgroundColor: COLORS.blue,
+    marginStart:20
   },
 });
 
-
-
 export default AddService;
+

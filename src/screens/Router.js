@@ -49,7 +49,7 @@ const AdminScreens = () => {
 const SettingScreens = () => {
     return (
         <Stack.Navigator
-            initialRouteName="Settings"
+            
             screenOptions={{
                 headerTintColor: 'white',
                 headerStyle: { backgroundColor: COLORS.pink },
@@ -63,7 +63,7 @@ const SettingScreens = () => {
 const TransactionScreens = () => {
     return (
         <Stack.Navigator
-            initialRouteName="Transaction"
+          
             screenOptions={{
                 headerTintColor: 'white',
                 headerStyle: { backgroundColor: COLORS.pink },
@@ -77,7 +77,7 @@ const TransactionScreens = () => {
 const CustomerScreens = () => {
     return (
         <Stack.Navigator
-            initialRouteName="Customer"
+            
             screenOptions={{
                 headerTintColor: 'white',
                 headerStyle: { backgroundColor: COLORS.pink },
