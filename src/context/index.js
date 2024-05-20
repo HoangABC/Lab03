@@ -2,6 +2,7 @@ import { createContext, useContext, useMemo, useReducer } from "react";
 import auth from "@react-native-firebase/auth"
 import firestore from "@react-native-firebase/firestore"
 import { alert } from "react-native";
+import { useNavigation } from '@react-navigation/native';
 
 const MyContext = createContext();
 
@@ -40,25 +41,26 @@ function useMyContextController() {
 const USERS = firestore().collection("USERS")
 const SERVICES = firestore().collection("SERVICES")
 
-const login = (dispatch, email, password) =>{
+const login = (dispatch, email, password, navigation) => {
     auth().signInWithEmailAndPassword(email, password)
-    .then(
-        ()=>
+        .then(() =>
             USERS.doc(email)
-        .onSnapshot(u=>{
-            const value = u.data();
-            console.log("Dang nhap thanh cong voi user : ",value);
-            dispatch({type:"USER_LOGIN",value});
-            
-        })
-    )
-    .catch(e=> alert("Sai user va password"))
+                .onSnapshot(u => {
+                    const value = u.data();
+                    console.log("Dang nhap thanh cong voi user : ", value);
+                    dispatch({ type: "USER_LOGIN", value });
+                    
+                   
+                    navigation.navigate('Home');
+                })
+        )
+        .catch(e => alert("Sai user và password"))
 }
 
 const logout = (dispatch) => {
     dispatch({ type: "USER_LOGIN", value: null });
-
 };
+
 
 
 const createNewService = (newService) => {

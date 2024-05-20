@@ -5,4 +5,5 @@ export default {
     greyDark: '#BBBBBB',
     black: '#000000',
     pink: '#FF3366',
+    white: '#fff'
 };

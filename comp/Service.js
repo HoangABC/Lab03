@@ -4,14 +4,15 @@ import { List } from 'react-native-paper';
 
 const Service = ({ id, title, complete, price }) => {
   const truncateTitle = (title) => {
-    const maxLength = 90; 
+    if (!title) return ''; 
+    const maxLength = 90;
     return title.length > maxLength ? `${title.substring(0, maxLength)}...` : title;
   };
 
   const formatPrice = (price) => {
-    return new Intl.NumberFormat('Vi-VN',{style:'currency',currency:'VND'}).format(price);
+    if (typeof price !== 'number') return ''; 
+    return new Intl.NumberFormat('Vi-VN', { style: 'currency', currency: 'VND' }).format(price);
   };
-  
 
   return (
     <View style={styles.container}>
@@ -21,8 +22,8 @@ const Service = ({ id, title, complete, price }) => {
           titleStyle={styles.title}
         />
       </View>
-      {price !== undefined && price !== null && ( 
-         <View style={styles.right}>
+      {price !== undefined && price !== null && (
+        <View style={styles.right}>
           <Text style={styles.price}>{formatPrice(price)}</Text>
         </View>
       )}
@@ -39,11 +40,11 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     borderBottomWidth: 1,
     borderBottomColor: '#eee',
-    borderWidth: 1, 
-    borderColor: 'black', 
-    borderRadius: 8, 
-    marginHorizontal: 16, 
-    marginBottom: 8, 
+    borderWidth: 1,
+    borderColor: 'black',
+    borderRadius: 8,
+    marginHorizontal: 16,
+    marginBottom: 8,
   },
   left: {
     flex: 1,
@@ -58,7 +59,7 @@ const styles = StyleSheet.create({
   price: {
     fontSize: 16,
     fontWeight: 'bold',
-    color: '#007bff', 
+    color: '#007bff',
   },
 });
 
